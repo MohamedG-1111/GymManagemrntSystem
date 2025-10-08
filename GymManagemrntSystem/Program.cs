@@ -1,4 +1,5 @@
 using GymManagementSystemDAL.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymManagemrntSystem
 {
@@ -13,7 +14,10 @@ namespace GymManagemrntSystem
 
             var app = builder.Build();
 
-            builder.Services.AddScoped<AppDbContext>();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

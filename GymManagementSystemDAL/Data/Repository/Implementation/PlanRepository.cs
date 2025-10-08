@@ -1,49 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using GymManagementSystemDAL.Data;
+using System.Text;
+using System.Threading.Tasks;
+using GymManagementSystemDAL.Data.Repository.Interface;
 using GymManagementSystemDAL.Model;
-using GymManagementSystemDAL.Repository.Interface;
 
-namespace GymManagementSystemDAL.Repository.Implementation
+namespace GymManagementSystemDAL.Data.Repository.Implementation
 {
     public class PlanRepository : IPlanRepository
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _Context;
 
-        public PlanRepository(AppDbContext context)
+        public PlanRepository(AppDbContext context) 
         {
-            _context = context;
+               _Context=context;
         }
+        public IEnumerable<Plan> GetAll()=>_Context.Plans.ToList();
 
-        public int Add(Plan plan)
-        {
-            _context.Plans.Add(plan);
-            return _context.SaveChanges();
-        }
 
-        public int Delete(int id)
-        {
-            var plan = _context.Plans.Find(id);
-            if (plan == null) return 0;
 
-            _context.Plans.Remove(plan);
-            return _context.SaveChanges();
-        }
-
-        public IEnumerable<Plan> GetAll()
-        {
-            return _context.Plans.ToList();
-        }
-
-        public Plan? GetById(int id)
-        {
-            return _context.Plans.Find(id);
-        }
-
+        public Plan? GetById(int id) => _Context.Plans.Find(id);
+       
         public int Update(Plan plan)
         {
-            _context.Plans.Update(plan);
-            return _context.SaveChanges();
+            _Context.Plans.Add(plan);
+            return _Context.SaveChanges();
         }
     }
 }

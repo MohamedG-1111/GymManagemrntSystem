@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using GymManagementSystemDAL.Model;
 
-namespace GymManagementSystemDAL.Repository.Interface
+namespace GymManagementSystemDAL.Data.Repository.Interface
 {
-   public interface IPlanRepository
+    public interface IPlanRepository
     {
         IEnumerable<Plan> GetAll();
-        Plan? GetById(int id);
-        int Add(Plan plan);
+
+        Plan ? GetById(int id);
+
         int Update(Plan plan);
-        int Delete(int id);
+
+
     }
 }
