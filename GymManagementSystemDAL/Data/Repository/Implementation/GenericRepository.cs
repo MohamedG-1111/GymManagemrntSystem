@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagementSystemDAL.Data.Repository.Interface;
@@ -17,29 +18,33 @@ namespace GymManagementSystemDAL.Data.Repository.Implementation
         {
             _Context = context;
         }
-        public int Add(IEntity entity)
+        public void Add(IEntity entity)
         {
           _Context.Set<IEntity>().Add(entity);
-            return _Context.SaveChanges();  
+            
         }
 
-        public int Delete(IEntity entity)
+        public void Delete(IEntity entity)
         {
             _Context.Set<IEntity>().Remove(entity);
-            return _Context.SaveChanges();
+           
         }
 
         public IEntity? Get(int id) => _Context.Set<IEntity>().Find(id);
 
-     
+        public IEnumerable<IEntity> GetAll(Expression<Func<IEntity, bool>>? condition = null)
+        {
+            if(condition == null)
+                return _Context.Set<IEntity>().AsNoTracking().ToList();
+            else
+                return _Context.Set<IEntity>().Where(condition).ToList();    
 
-        public IEnumerable<IEntity> GetAll()=> _Context.Set<IEntity>().AsNoTracking().ToList();
+        }
 
-
-        public int Update(IEntity entity)
+        public void Update(IEntity entity)
         {
             _Context.Set<IEntity>().Update(entity);
-            return _Context.SaveChanges();
+           
         }
     }
 }
