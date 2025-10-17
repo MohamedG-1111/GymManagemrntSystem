@@ -26,7 +26,7 @@ namespace GymManagementSystemDAL.Data.Configurations
             builder.Property(b => b.CreatedAt)
                 .HasColumnName("BookingDate");
 
-            builder.HasKey(B => new { B.SessionId, B.MemberId, B.CreatedAt });
+            builder.HasKey(B => new { B.SessionId, B.MemberId});
                 
         }
     }

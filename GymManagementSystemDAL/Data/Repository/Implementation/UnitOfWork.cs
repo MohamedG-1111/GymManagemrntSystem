@@ -12,11 +12,17 @@ namespace GymManagementSystemDAL.Data.Repository.Implementation
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext context;
+        private readonly ISessionRepository _sessionRepository;
        public Dictionary<Type, Object> Repos = new Dictionary<Type, Object>();
-        public UnitOfWork(AppDbContext Context) 
+        public UnitOfWork(AppDbContext Context,ISessionRepository sessionRepository) 
         {
             context = Context;
+            _sessionRepository= sessionRepository;
         }
+
+        public ISessionRepository SessionRepository { get; }
+
+      
         public IGenericRepository<T> GetGenericRepository<T>() where T : BaseEntity, new()
         {
             var EntityType = typeof(T);
