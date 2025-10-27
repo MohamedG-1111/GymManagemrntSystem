@@ -10,7 +10,6 @@ namespace GymManagementSystemBLL.ViewModels.Member
     public class HealthRecordView
     {
 
-        [Required(ErrorMessage = "Note is Required")]
         [StringLength(100, MinimumLength = 10, ErrorMessage = "Note Must Be Between 10 and 100")]
         public string? Note { get; set; }
 

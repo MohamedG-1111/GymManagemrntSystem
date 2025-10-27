@@ -22,7 +22,7 @@ namespace GymManagementSystemBLL.ViewModels.Member
      // --------------------------------
         public string ? address { get; set; }
 
-        public DateOnly? DateOfBirth {  get; set; }
+        public string? DateOfBirth {  get; set; }
 
         public string ?MemberShipStartDate { get; set; }
         public string ? MembershipEndDate { get; set; }

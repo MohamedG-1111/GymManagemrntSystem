@@ -11,7 +11,7 @@ namespace GymManagementSystemBLL.ViewModels.Trainer
     {
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 50 characters.")]
-        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "Name must contain letters only.")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Name must contain letters only.")]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Email is required.")]
@@ -36,11 +36,11 @@ namespace GymManagementSystemBLL.ViewModels.Trainer
         public int BuildingNumber { get; set; }
 
         [Required(ErrorMessage = "Street name is required.")]
-        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "Street name must contain letters and spaces only.")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Street name must contain letters and spaces only.")]
         public string Street { get; set; } = null!;
 
         [Required(ErrorMessage = "City is required.")]
-        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "City name must contain letters and spaces only.")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "City name must contain letters and spaces only.")]
         public string City { get; set; } = null!;
 
 

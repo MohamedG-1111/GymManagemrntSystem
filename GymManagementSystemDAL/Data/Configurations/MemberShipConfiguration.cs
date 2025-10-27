@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GymManagementSystemDAL.Model;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace GymManagementSystemDAL.Data.Configurations
+﻿namespace GymManagementSystemDAL.Data.Configurations
 {
+    using GymManagementSystemDAL.Model;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    /// <summary>
+    /// Defines the <see cref="MemberShipConfiguration"/>
+    /// </summary>
     public class MemberShipConfiguration : IEntityTypeConfiguration<Membership>
     {
+        /// <summary>
+        /// The Configure
+        /// </summary>
+        /// <param name="builder">The
+        ///     builder<see cref="EntityTypeBuilder{Membership}"/></param>
         public void Configure(EntityTypeBuilder<Membership> builder)
         {
             builder.Property(mp => mp.CreatedAt)
@@ -24,7 +27,7 @@ namespace GymManagementSystemDAL.Data.Configurations
                 .WithMany(m => m.Membersplans)
                 .HasForeignKey(ml => ml.MemberId);
 
-            builder.Ignore(T=>T.Id);
+            builder.Ignore(T => T.Id);
         }
     }
 }

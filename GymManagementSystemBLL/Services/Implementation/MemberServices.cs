@@ -7,6 +7,7 @@ using AutoMapper;
 using GymManagementSystemBLL.Services.Interfaces;
 using GymManagementSystemBLL.ViewModels;
 using GymManagementSystemBLL.ViewModels.Member;
+using GymManagementSystemDAL.Data.Repository.Implementation;
 using GymManagementSystemDAL.Data.Repository.Interface;
 using GymManagementSystemDAL.Model;
 
@@ -33,9 +34,17 @@ namespace GymManagementSystemBLL.Services.Implementation
 
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
-            var members = unitOfWork.GetGenericRepository<Member>().GetAll();
-            var MemberViews = _mapper.Map<IEnumerable<MemberViewModel>>(members);
-            return MemberViews;
+            try
+            {
+                var Members = unitOfWork.GetGenericRepository<Member>().GetAll();
+                if (!Members.Any()) return [];
+                return _mapper.Map<IEnumerable<MemberViewModel>>(Members);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return [];
+            }
         }
 
         public HealthRecordView? GetHealthRecord(int Id)
@@ -68,7 +77,7 @@ namespace GymManagementSystemBLL.Services.Implementation
             
             if(Member == null) return null;
             var MemberDetails = _mapper.Map<MemberViewModel>(Member);
-            var ActiveMemberShip= unitOfWork.GetGenericRepository<Membership>().GetAll(x=>x.MemberId==Member.Id && x.Status=="Active")
+            var ActiveMemberShip = unitOfWork.GetGenericRepository<Membership>().GetAll(x => x.MemberId == Member.Id).Where(x=>x.Status == "Active")
                 .FirstOrDefault();
             
             if(ActiveMemberShip != null)
@@ -87,9 +96,13 @@ namespace GymManagementSystemBLL.Services.Implementation
             if (member == null)
                 return false;
 
-            var hasMemberSession = unitOfWork.GetGenericRepository<Booking>()
-                .GetAll(x => x.MemberId == id && x.session.StartDate > DateTime.Now)
-                .Any();
+            var SeesionsIds = unitOfWork.GetGenericRepository<Booking>()
+                .GetAll(x => x.MemberId == id)
+                 .Select(x => x.SessionId);
+
+
+            var hasMemberSession = unitOfWork.GetGenericRepository<Session>()
+                .GetAll(x => SeesionsIds.Contains(x.Id) && x.StartDate > DateTime.Now).Any();
 
             if (hasMemberSession)
                 return false;
@@ -120,7 +133,9 @@ namespace GymManagementSystemBLL.Services.Implementation
             {
                 var member = unitOfWork.GetGenericRepository<Member>().Get(Id);
                 if (member == null) return false;
-                if (IsEmailExist(MemberToUpdate.Email) || IsPhoneExist(MemberToUpdate.Phone)) return false;
+                var EmailExist = unitOfWork.GetGenericRepository<Member>().GetAll(x => x.Email == MemberToUpdate.Email && x.Id != Id).Any();
+                var PhoneExist = unitOfWork.GetGenericRepository<Member>().GetAll(x => x.Phone == MemberToUpdate.Phone && x.Id != Id).Any();
+                if (EmailExist || PhoneExist) return false;
                 _mapper.Map(MemberToUpdate, member);
 
                 unitOfWork.GetGenericRepository<Member>().Update(member);
