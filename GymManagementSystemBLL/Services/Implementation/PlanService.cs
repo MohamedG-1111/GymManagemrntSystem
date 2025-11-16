@@ -81,7 +81,9 @@ namespace GymManagementSystemBLL.Services.Implementation
         private bool HasActiveMembership(int id)
         {
             var HasMemberShip = unitOfWork.GetGenericRepository<Membership>()
-                .GetAll(x => x.PlanId == id && x.Status == "Active").Any();
+        .GetAll(x => x.PlanId == id)   
+        .AsEnumerable()                
+        .Any(x => x.Status == "Active"); 
             return HasMemberShip;
         }
         #endregion

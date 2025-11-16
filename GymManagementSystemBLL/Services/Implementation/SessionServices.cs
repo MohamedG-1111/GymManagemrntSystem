@@ -73,8 +73,9 @@ namespace GymManagementSystemBLL.Services.Implementation
         public IEnumerable<SessionViewModel> GetAll()
         {
             var Sessions = _unitOfWork.SessionRepository.GetAllSessionsWithCategoryAndTrainers();
-            if (!Sessions.Any()) return [];
-            var MappedSessions=mapper.Map<IEnumerable<Session>, IEnumerable<SessionViewModel>>(Sessions);
+            if (Sessions == null || !Sessions.Any()) return [];
+
+            var MappedSessions =mapper.Map<IEnumerable<Session>, IEnumerable<SessionViewModel>>(Sessions);
             foreach (var session in MappedSessions)
             {
                 session.AvailableSlots = session.Capacity - _unitOfWork.SessionRepository.GetCountOfBookedSloted(session.Id);
@@ -123,7 +124,7 @@ namespace GymManagementSystemBLL.Services.Implementation
         }
         private bool InvaildDate(DateTime StartDate, DateTime EndDate)
         {
-            return StartDate < EndDate;
+            return StartDate < EndDate && DateTime.Now < StartDate;
         }
         private bool ISSessionAvailableToUpdate(Session session)
         {
@@ -141,6 +142,18 @@ namespace GymManagementSystemBLL.Services.Implementation
             if (session.StartDate > DateTime.Now) return false;
             if (_unitOfWork.SessionRepository.GetCountOfBookedSloted(session.Id) > 0) return false;
             return true;
+        }
+
+        public IEnumerable<TrainerSelectedViewModel> GetTrainerDropList()
+        {
+            var Trainers = _unitOfWork.GetGenericRepository<Trainer>().GetAll();
+            return mapper.Map<IEnumerable<TrainerSelectedViewModel>>(Trainers);
+        }
+
+        public IEnumerable<CategorySelectedViewModel> GetCategoryDropList()
+        {
+            var Categories = _unitOfWork.GetGenericRepository<Category>().GetAll();
+            return mapper.Map<IEnumerable<CategorySelectedViewModel>>(Categories);
         }
 
 

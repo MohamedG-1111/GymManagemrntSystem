@@ -66,11 +66,16 @@ namespace GymManagementSystemBLL
         private void MapsSession()
         {
             CreateMap<Session, SessionViewModel>()
-        .ForMember(dest => dest.CategoryName, Options => Options.MapFrom(src => src.Category.Name))
-        .ForMember(dest => dest.TrainerName, Options => Options.MapFrom(src => src.Trainer.Name))
-        .ForMember(dest => dest.AvailableSlots, Options => Options.Ignore());
-            CreateMap<CreateSessionViewModel, Session>().ReverseMap();
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.TrainerName, opt => opt.MapFrom(src => src.Trainer.Name))
+                .ForMember(dest => dest.AvailableSlots, opt => opt.Ignore());
+
+            CreateMap<UpdateSessionViewModel, Session>().ReverseMap();
+            CreateMap<Session, CreateSessionViewModel>().ReverseMap();
+            CreateMap<Trainer, TrainerSelectedViewModel>();
+            CreateMap<Category, CategorySelectedViewModel>();
         }
+
         private void MapMember()
         {
             CreateMap<CreateViewMemeberModel, Member>()
@@ -110,14 +115,15 @@ namespace GymManagementSystemBLL
 
         private void MapPlan()
         {
-            CreateMap<Plan, PlanViewModel>().ReverseMap();
             CreateMap<Plan, PlanToUpdate>();
             CreateMap<PlanViewModel, Plan>()
+                .ForMember(dest => dest.DurationDays, opt => opt.MapFrom(src => src.Duration))
                 .ForMember(dest => dest.Name, opt => opt.Ignore())
                 .AfterMap((src, dest) =>
                 {
                     dest.UpdateAt = DateTime.Now;
-                });
+                }).ReverseMap();
+
             
         }
     }

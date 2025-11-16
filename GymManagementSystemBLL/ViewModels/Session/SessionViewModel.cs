@@ -35,8 +35,15 @@ namespace GymManagementSystemBLL.ViewModels.Session
             }
         }
 
-        public string Date => $"{StartDate.ToString("MMM dd ,YYYY")}";
-        public TimeSpan Duration => EndDate - StartDate;
+        public string Date => StartDate.ToString("MMM dd, yyyy");
+             public string Duration
+        {
+            get
+            {
+                var diff = EndDate - StartDate;
+                return $"{(int)diff.TotalHours} Hours {diff.Minutes} Minutes";
+            }
+        }
 
         public string Time => $"{StartDate:hh:mm:tt} - {EndDate:hh:mm:tt}";
     }
