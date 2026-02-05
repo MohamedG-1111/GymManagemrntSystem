@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GymManagementSystemDAL.Model;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace GymManagementSystemDAL.Data.Configurations
+﻿namespace GymManagementSystemDAL.Data.Configurations
 {
+    using GymManagementSystemDAL.Model;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    /// <summary>
+    /// Defines the <see cref="GymUserConfigurations{T}"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class GymUserConfigurations<T> : IEntityTypeConfiguration<T> where T : GymUser
     {
+        /// <summary>
+        /// The Configure
+        /// </summary>
+        /// <param name="builder">The builder<see cref="EntityTypeBuilder{T}"/>
+        ///     </param>
         public void Configure(EntityTypeBuilder<T> builder)
         {
             builder.Property(t => t.Name)
@@ -21,15 +25,13 @@ namespace GymManagementSystemDAL.Data.Configurations
                 .HasColumnType("varchar")
                 .HasMaxLength(100);
             builder.HasIndex(t => t.Email).IsUnique();
-            
 
-            builder.Property(t=>t.Phone)
-                .HasMaxLength (11);
+            builder.Property(t => t.Phone)
+                .HasMaxLength(11);
             builder.HasIndex(t => t.Phone).IsUnique();
 
             builder.Property(t => t.gender)
                 .HasConversion<string>();
-
 
             builder.ToTable(t =>
             {
@@ -52,8 +54,6 @@ namespace GymManagementSystemDAL.Data.Configurations
                .HasColumnName("Streat")
                .HasMaxLength(30);
             });
-                
-                
         }
     }
 }

@@ -12,7 +12,7 @@ namespace GymManagementSystemDAL.Model
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;    
         public int DurationDays { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public bool IsActive { get; set; }
 
         public ICollection<Membership> PlanMembers= new List<Membership>();

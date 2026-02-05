@@ -1,32 +1,37 @@
-using System.Diagnostics;
-using GymManagemrntSystem.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace GymManagemrntSystem.Controllers
+﻿namespace GymManagemrntSystem.Controllers
 {
+    using GymManagementSystemBLL.Services.Interfaces;
+    using Microsoft.AspNetCore.Mvc;
+
+    /// <summary>
+    /// Defines the <see cref="HomeController"/>
+    /// </summary>
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        /// <summary>
+        /// Defines the analyticalService
+        /// </summary>
+        private readonly IAnalyticalService analyticalService;
 
-        public HomeController(ILogger<HomeController> logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HomeController"/>
+        /// class.
+        /// </summary>
+        /// <param name="analyticalService">The
+        ///     analyticalService<see cref="IAnalyticalService"/></param>
+        public HomeController(IAnalyticalService analyticalService)
         {
-            _logger = logger;
+            this.analyticalService = analyticalService;
         }
 
+        /// <summary>
+        /// The Index
+        /// </summary>
+        /// <returns>The <see cref="IActionResult"/></returns>
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var Data = analyticalService.GetAnalytical();
+            return View(Data);
         }
     }
 }

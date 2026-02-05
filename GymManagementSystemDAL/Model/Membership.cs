@@ -24,7 +24,7 @@ namespace GymManagementSystemDAL.Model
         {
             get
             {
-                if (EndDate > DateTime.Now)
+                if (EndDate <= DateTime.Now)
                     return "Expired";
                 else
                     return "Active";

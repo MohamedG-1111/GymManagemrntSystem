@@ -10,8 +10,8 @@ namespace GymManagementSystemDAL.Model
     {
         public string Description { get; set; } = null!;
         public int Capacity { get; set; }
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public ICollection<Booking> SessionsBooking { get; set; } = new List<Booking>();
 
