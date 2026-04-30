@@ -136,4 +136,4 @@ GymManagementSystem/
 
 ## 👨‍💻 Author
 
-Developed by **[Your Name]**
+Developed by **[Mohamed Gomaa]**
